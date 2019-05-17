@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 let Job_listing = require('../models/job_listing'); //Job Listing Model
-let Job_rating = require('../models/job_rating'); //Job Listing Model
+let Job_rating = require('../models/job_rating'); //Job Rating Model
 let User = require('../models/user'); //User Model
 
 //Add Route
