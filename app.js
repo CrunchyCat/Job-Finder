@@ -116,13 +116,17 @@ app.get('/requests', function(req, res) {
 //Search Route
 app.get('/search', function(req, res) {
   job_listing.find({}, function(err, job_listings) {
-    if (err)
-      console.log(err);
-    else {
-      res.render('search', {
-        title: 'Search'
-      });
-    }
+    job_request.find({}, function(err, job_requests) {
+      if (err)
+        console.log(err);
+      else {
+        res.render('search', {
+          title: 'Search',
+          job_listings: job_listings,
+          job_requests: job_requests
+        });
+      }
+    });
   });
 });
 
@@ -146,7 +150,7 @@ app.get('*', function(req, res) {
   });
 });
 
-//Start Server
+//Start Server on Port 3000
 app.listen(3000, function() {
   console.log('Server started on port 3000...');
 });

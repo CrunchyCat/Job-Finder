@@ -8,16 +8,73 @@ block content
     i.fas.fa-search &nbsp;
     span Search for Job Listings &amp; Requests
   hr
-  form.search_form.center-block(method='get', action="/search/")
-    .input-group.search_option
-      input#searchBox.search_field.form-control(type='text', name='q', placeholder='Search Job Finder')
-      span.input-group-btn
-        button.btn.btn-primary(onclick='myFunction()', type='submit')
-          i.fas.fa-search
-  br
   .form-check
     input#ListingsCheckbox.form-check-input(type='radio', name='SearchCheckbox', checked='')
     label.form-check-label(for='ListingsCheckbox') Job Listings
   .form-check
     input#RequestsCheckbox.form-check-input(type='radio', name='SearchCheckbox')
     label.form-check-label(for='RequestsCheckbox') Job Requests
+  br
+  form.search_form.center-block(method='get', action="/search/")
+    .input-group.search_option
+      input#searchBox.search_field.form-control(type='text', onkeyup="return search()", name='q', placeholder='Search Job Finder', title='Search for Posts')
+      span.input-group-btn
+        button.btn.btn-primary(onclick='return search()', type='submit')
+          i.fas.fa-search
+  br
+  #listings(style='display: none')
+    h6
+      i.fas.fa-sort-amount-down &nbsp;
+      span Job Title
+      span(style='float: right').fas.fa-dollar-sign &nbsp;
+    ul#filterL.list-group
+      each job_listing, i in job_listings.reverse()
+        li.list-group-item
+          i.fas.fa-paper-plane &nbsp;
+          a(href="/listings/" + job_listing._id)= job_listing.title
+          if (job_listing.pay != "")
+            span(style='float: right') #{job_listing.pay}
+      else
+        p No Job Listings to Display
+
+  #requests(style='display: none')
+    h6
+      i.fas.fa-sort-amount-down &nbsp;
+      span Job Title
+      span(style='float: right').fas.fa-dollar-sign &nbsp;
+    ul#filterR.list-group
+      each job_request, i in job_requests.reverse()
+        li.list-group-item
+          i.fas.fa-bullhorn &nbsp;
+          a(href="/requests/" + job_request._id)= job_request.title
+          if (job_request.pay != "")
+            span(style='float: right') #{job_request.pay}
+      else
+        p No Job Requests to Display
+
+    script.
+      function search() {
+        var checkBox = document.getElementById("ListingsCheckbox"); //Checks if listings or requests
+        var input = document.getElementById("searchBox");
+        var ul;
+        if (checkBox.checked) { //Shows Listings if true, Requests if False
+          listings.style.display = 'block';
+          requests.style.display = 'none';
+          ul = document.getElementById("filterL");
+        } else {
+          listings.style.display = 'none';
+          requests.style.display = 'block';
+          ul = document.getElementById("filterR");
+        }
+        var li = ul.getElementsByTagName("li");
+        for (var i = 0; i < li.length; i++) { //Filters search results
+          var a = li[i].getElementsByTagName("a")[0];
+          var txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(input.value.toUpperCase()) > -1) {
+            li[i].style.display = '';
+          } else {
+            li[i].style.display = 'none';
+          }
+        }
+        return false;
+      }

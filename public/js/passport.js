@@ -23,10 +23,12 @@ module.exports = function(passport) {
     });
   }));
 
+  //Middleware code for serializing
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
 
+  //Middleware code for deserializing
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
       done(err, user);

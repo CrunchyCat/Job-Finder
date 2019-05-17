@@ -118,18 +118,16 @@ router.get('/:id', function(req, res) {
         }
         actual_job.rating = avg_rating;
 
-        let hasUserVoted = false;
+        let hasUserVoted = false; //To prevent voting a second time
         User.findById(job_listing.author, function(err, job_author) {
           if (err)
             console.log(err);
           else
-            // did the user vote already?
-            if (req.user)
+            if (req.user) //Did the user vote already?
               rating_authors.forEach(function(author_id) {
                 if (req.user.id == author_id)
                   hasUserVoted = true;
               });
-
             res.render('job_listing', {
               job_listing: actual_job,
               author: job_author.name,
