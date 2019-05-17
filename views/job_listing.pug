@@ -11,8 +11,43 @@ block content
   h3 #{job_listing.desc}
   br
   h4
+    i(style='float: left').fas.fa-star &nbsp;
+    if job_listing.rating == null
+        if user && user._id != job_listing.author && !hasVoted
+          a.btn.btn-outline-primary(data-toggle="modal" href="#giveRatingModal") Rate Listing
+          p
+        else
+          p= 'No Rating'
+    else
+      p= job_listing.rating.toFixed(2) + '/5'
     p= job_listing.pay == "" ? 'Not Disclosed' : job_listing.pay
       i(style='float: left').fas.fa-dollar-sign &nbsp; &nbsp;
+    #giveRatingModal(class="modal fade")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          div(class="modal-header")
+            h4(class="modal-title") Rate Job Advert
+            button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+          div(class="modal-body")
+            form(method='POST', action='/ratings/add/' + job_listing._id)
+              #form-group
+                .rate
+                  input#star5.form-control(type='radio', name='rating', value='5')
+                  label(for='star5', title='5 stars') 5 stars
+                  input#star4.form-control(type='radio', name='rating', value='4')
+                  label(for='star4', title='4 stars') 4 stars
+                  input#star3.form-control(type='radio', name='rating', value='3')
+                  label(for='star3', title='3 stars') 3 stars
+                  input#star2.form-control(type='radio', name='rating', value='2')
+                  label(for='star2', title='2 stars') 2 stars
+                  input#star1.form-control(type='radio', name='rating', value='1')
+                  label(for='star1', title='1 stars') 1 star
+              br
+              br
+              a.btn.btn-outline-light(data-dismiss="modal", style='margin-right: 20px')
+                i.fas.fa-angle-double-left
+              button.btn.btn-outline-success(data-id=job_listing._id type='submit')
+                i.fas.fa-check
     if (job_listing.address == "")
       p Not Disclosed
         i(style='float: left').fas.fa-map &nbsp;

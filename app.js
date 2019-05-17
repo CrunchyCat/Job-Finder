@@ -24,6 +24,7 @@ db.on('error', function(err) {
 const app = express(); //Initialize Express App
 let job_listing = require('./models/job_listing'); //Job Listing Model
 let job_request = require('./models/job_request'); //Job Request Model
+let job_rating = require('./models/job_rating'); // Job Rating Model
 
 //Load View Engine
 app.set('views', path.join(__dirname, 'views'));
@@ -133,9 +134,11 @@ app.get('/about', function(req, res) {
 });
 
 //Route Files
+
 app.use('/listings', require('./routes/listings'));
 app.use('/requests', require('./routes/requests'));
 app.use('/users', require('./routes/users'));
+app.use('/ratings', require('./routes/ratings'));
 
 //Catch 404
 app.get('*', function(req, res) {
