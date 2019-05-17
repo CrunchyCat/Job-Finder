@@ -81,7 +81,7 @@ app.get('*', function(req, res, next) {
 //Home Route
 app.get('/', function(req, res) {
   res.render('home', {
-    title: 'Home'
+    title: 'Job Finder'
   });
 });
 
