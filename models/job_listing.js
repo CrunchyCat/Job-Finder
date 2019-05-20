@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 
 //Job Listing Mongoose Schema
-let Job_listing = module.exports = mongoose.model('Job_listing', mongoose.Schema({
+module.exports = mongoose.model('Job_listing', mongoose.Schema({
   title:{
     type: String,
     required: true
